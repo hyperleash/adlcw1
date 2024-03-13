@@ -12,6 +12,8 @@ from torchvision.models import vit_b_16
 from torchvision.models import vision_transformer
 import numpy as np
 
+
+
 class MixupDataset(Dataset):
     def __init__(self, dataset, alpha=0.1, max=1.0, min=0.0, sampling_method = 1):
         self.dataset = dataset  

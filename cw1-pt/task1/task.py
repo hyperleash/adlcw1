@@ -4,8 +4,6 @@ import time
 
 from functions import polynomial_fun, fit_polynomial_ls, fit_polynomial_sgd, rmse
 
-
-
 if __name__ == "__main__":
 
     np.random.seed(42)
@@ -48,18 +46,18 @@ if __name__ == "__main__":
 
     print("\nTraining with SGD M = 2\n")
     sgd_start = time.time()
-    w_sgd_M_2_train = fit_polynomial_sgd(x_train, t_train, 2, 5e-6, 4)
+    w_sgd_M_2_train = fit_polynomial_sgd(x_train, t_train, 2, 1e-2, 20)
     sgd_end = time.time()
     print("Resulting weights:")
     print(w_sgd_M_2_train)
 
     print("\nTraining with SGD M = 3\n")
-    w_sgd_M_3_train = fit_polynomial_sgd(x_train, t_train, 3, 2e-8, 4)
+    w_sgd_M_3_train = fit_polynomial_sgd(x_train, t_train, 3, 1e-3, 20) #2e-8
     print("Resulting weights:")
     print(w_sgd_M_3_train)
 
     print("\nTraining with SGD M = 4\n")
-    w_sgd_M_4_train = fit_polynomial_sgd(x_train, t_train, 4, 5e-11, 4)
+    w_sgd_M_4_train = fit_polynomial_sgd(x_train, t_train, 4, 1e-3, 20) #5e-11
     print("Resulting weights:")
     print(w_sgd_M_4_train)
 
