@@ -1,7 +1,5 @@
 import torch
 import numpy as np
-import torch.nn as nn
-import torch.nn.functional as F
 
 
 def polynomial_fun(w: np.ndarray,x: np.ndarray) -> np.ndarray:
@@ -167,7 +165,19 @@ def train_test_split(x: np.ndarray, t: np.ndarray, np_seed: int, test_size: floa
     return x_train, x_val, t_train, t_val
 
 def fit_polynomial_sgd_cv(x: np.ndarray, t: np.ndarray, M_list: list, lr_list: float, batch_size: int, k: int = 5) -> int:
+    """Method for performing cross-validated training of a polynomial model using SGD and selecting the best model
 
+    Args:
+        x (np.ndarray): input values
+        t (np.ndarray): target values
+        M_list (list): List of polynomial degrees to try
+        lr_list (float): List of learning rates to try
+        batch_size (int): batch size
+        k (int, optional): number of CV folds. Defaults to 5.
+
+    Returns:
+        int: best polynomial degree, best weights
+    """
     best_M = None
     best_validation_error = float('inf')
 
@@ -204,21 +214,5 @@ def fit_polynomial_sgd_cv(x: np.ndarray, t: np.ndarray, M_list: list, lr_list: f
     best_weights = fit_polynomial_sgd(x, t, best_M, best_lr, batch_size)
 
     return best_M, best_weights
-# class Net(nn.Module):
-#     def __init__(self):
-#         super().__init__()
-#         self.conv1 = nn.Conv2d(3, 6, 5)
-#         self.pool = nn.MaxPool2d(2, 2)
-#         self.conv2 = nn.Conv2d(6, 16, 5)
-#         self.fc1 = nn.Linear(16 * 5 * 5, 120)
-#         self.fc2 = nn.Linear(120, 84)
-#         self.fc3 = nn.Linear(84, 10)
 
-#     def forward(self, x):
-#         x = self.pool(F.relu(self.conv1(x)))
-#         x = self.pool(F.relu(self.conv2(x)))
-#         x = torch.flatten(x, 1) # flatten all dimensions except batch
-#         x = F.relu(self.fc1(x))
-#         x = F.relu(self.fc2(x))
-#         x = self.fc3(x)
-#         return x
+
