@@ -25,9 +25,11 @@ if __name__ == '__main__':
     dataiter = iter(trainset)
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
-    #TEST SET
+    #TEST SET (REGULAR AND MIXED UP WITH BOTH SAMPLING METHODS)
     testset = torchvision.datasets.CIFAR10(root='../task2/data', train=False, download=True, transform=transform)
     testloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=2)
+    mixup_testset_s1 = MixupDataset(testset, alpha=0.4, sampling_method=1, demo=False)  
+    mixup_testset_s2 = MixupDataset(testset, alpha=0.4, sampling_method=2, demo=False)  
 
     train_size = int(0.9 * len(trainset))
     val_size = len(trainset) - train_size
@@ -46,7 +48,18 @@ if __name__ == '__main__':
     test_all_checkpoints("vit_s1", epochs, "train", train_s1)
     test_all_checkpoints("vit_s1", epochs, "val", val_s1)
     test_all_checkpoints("vit_s1", epochs, "test", testset)
+    test_all_checkpoints("vit_s1", epochs, "test_mixup_s1", mixup_testset_s1)
 
     test_all_checkpoints("vit_s2", epochs, "train", train_s2)
     test_all_checkpoints("vit_s2", epochs, "val", val_s2)
     test_all_checkpoints("vit_s2", epochs, "test", testset)
+    test_all_checkpoints("vit_s2", epochs, "test_mixup_s2", mixup_testset_s2)
+
+    ###########################---COMPARISON---###########################
+
+    #For both methods the validation shows slightly higher loss and smaller accuracy than the training set. 
+    #This is expected as the model is trained on the training set and the validation set is used to check the performance of the model.
+
+    #Strangely, testing performance is noticably better than the development performance. 
+    #This is likely due to the fact that testing images aren't mixed up and the model is more confident in its predictions.
+    #This is further supported by the fact that the mixup test set has a lower accuracy than the regular test set and the mixup development set.
